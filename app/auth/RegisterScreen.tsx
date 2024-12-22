@@ -9,13 +9,14 @@ import API_URL from "../../config/config";
 export default function RegisterScreen() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
     const [dialogVisible, setDialogVisible] = useState(false);
     const [dialogMessage, setDialogMessage] = useState("");
     const router = useRouter();
 
     const handleRegister = async () => {
         try {
-            await axios.post(`${API_URL}/api/auth/register`, {username, password});
+            await axios.post(`${API_URL}/api/auth/register`, {username, password, email});
             router.replace("/auth/LoginScreen");
         } catch (error) {
             const errorMessage = (error as any).response?.data?.message || "An error occurred";
@@ -28,11 +29,20 @@ export default function RegisterScreen() {
         <PaperProvider>
             <ThemedView style={styles.container}>
                 <Text style={styles.title}>Create an Account</Text>
+                <Text style={styles.subtitle}>Join us and get started</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Username"
                     value={username}
                     onChangeText={setUsername}
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
                     autoCapitalize="none"
                 />
                 <TextInput
@@ -77,6 +87,11 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginBottom: 24,
         color: "#333",
+    },
+    subtitle: {
+        fontSize: 16,
+        color: "#666",
+        marginBottom: 24,
     },
     input: {
         width: "100%",

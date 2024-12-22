@@ -7,32 +7,41 @@ import {ThemedView} from "@/components/ThemedView";
 import {Button, Dialog, PaperProvider, Portal} from "react-native-paper";
 import API_URL from "../../config/config";
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
     const [dialogVisible, setDialogVisible] = useState(false);
     const [dialogMessage, setDialogMessage] = useState("");
+    const [isSuccess, setIsSuccess] = useState(false);
     const router = useRouter();
 
-    const handleLogin = async () => {
+    const handleRegister = async () => {
         try {
-            const response = await axios.post(`${API_URL}/api/auth/login`, {username, password});
-            const {token} = response.data.data;
-            await AsyncStorage.setItem("token", token);
-            router.replace("/(tabs)"); // Prevent back navigation to login
+            await axios.post(`${API_URL}/api/auth/register`, { username, password, email });
+            setDialogMessage("Registration successful!");
+            setIsSuccess(true);
+            setDialogVisible(true);
         } catch (error) {
             const errorMessage = (error as any).response?.data?.message || "An error occurred";
             setDialogMessage(errorMessage);
+            setIsSuccess(false);
             setDialogVisible(true);
+        }
+    };
+
+    const handleDialogDismiss = () => {
+        setDialogVisible(false);
+        if (isSuccess) {
+            router.replace("/auth/LoginScreen");
         }
     };
 
     return (
         <PaperProvider>
             <ThemedView style={styles.container}>
-                <Image source={require("../../assets/images/icon.png")} style={styles.logo}/>
-                <Text style={styles.title}>Welcome Back!</Text>
-                <Text style={styles.subtitle}>Log in to continue</Text>
+                <Text style={styles.title}>Create an Account</Text>
+                <Text style={styles.subtitle}>Join us and get started</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Username"
@@ -42,25 +51,33 @@ export default function LoginScreen() {
                 />
                 <TextInput
                     style={styles.input}
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
                     placeholder="Password"
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry
                 />
-                <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                    <Text style={styles.loginButtonText}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.registerButton} onPress={() => router.push("/auth/RegisterScreen")}>
+                <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
                     <Text style={styles.registerButtonText}>Register</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/auth/LoginScreen")}>
+                    <Text style={styles.loginButtonText}>Login</Text>
+                </TouchableOpacity>
                 <Portal>
-                    <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)}>
-                        <Dialog.Title>Login Failed</Dialog.Title>
+                    <Dialog visible={dialogVisible} onDismiss={handleDialogDismiss}>
+                        <Dialog.Title>{isSuccess ? "Success" : "Registration Failed"}</Dialog.Title>
                         <Dialog.Content>
                             <Text>{dialogMessage}</Text>
                         </Dialog.Content>
                         <Dialog.Actions>
-                            <Button onPress={() => setDialogVisible(false)}>OK</Button>
+                            <Button onPress={handleDialogDismiss}>OK</Button>
                         </Dialog.Actions>
                     </Dialog>
                 </Portal>
