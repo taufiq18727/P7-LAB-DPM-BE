@@ -7,19 +7,20 @@ import {ThemedView} from "@/components/ThemedView";
 import {Button, Dialog, PaperProvider, Portal} from "react-native-paper";
 import API_URL from "../../config/config";
 
-export default function RegisterScreen() {
+export default function LoginScreen() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
     const [dialogVisible, setDialogVisible] = useState(false);
     const [dialogMessage, setDialogMessage] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
     const router = useRouter();
 
-    const handleRegister = async () => {
+    const handleLogin = async () => {
         try {
-            await axios.post(`${API_URL}/api/auth/register`, { username, password, email });
-            setDialogMessage("Registration successful!");
+            const response = await axios.post(`${API_URL}/api/auth/login`, { username, password });
+            const { token } = response.data.data;
+            await AsyncStorage.setItem("token", token);
+            setDialogMessage("Login successful!");
             setIsSuccess(true);
             setDialogVisible(true);
         } catch (error) {
@@ -33,15 +34,16 @@ export default function RegisterScreen() {
     const handleDialogDismiss = () => {
         setDialogVisible(false);
         if (isSuccess) {
-            router.replace("/auth/LoginScreen");
+            router.replace("/(tabs)");
         }
     };
 
     return (
         <PaperProvider>
             <ThemedView style={styles.container}>
-                <Text style={styles.title}>Create an Account</Text>
-                <Text style={styles.subtitle}>Join us and get started</Text>
+                <Image source={require("../../assets/images/icon.png")} style={styles.logo} />
+                <Text style={styles.title}>Welcome Back!</Text>
+                <Text style={styles.subtitle}>Log in to continue</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Username"
@@ -51,28 +53,20 @@ export default function RegisterScreen() {
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder="Email"
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
                     placeholder="Password"
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry
                 />
-                <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
-                    <Text style={styles.registerButtonText}>Register</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/auth/LoginScreen")}>
+                <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
                     <Text style={styles.loginButtonText}>Login</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.registerButton} onPress={() => router.push("/auth/RegisterScreen")}>
+                    <Text style={styles.registerButtonText}>Register</Text>
                 </TouchableOpacity>
                 <Portal>
                     <Dialog visible={dialogVisible} onDismiss={handleDialogDismiss}>
-                        <Dialog.Title>{isSuccess ? "Success" : "Registration Failed"}</Dialog.Title>
+                        <Dialog.Title>{isSuccess ? "Success" : "Login Failed"}</Dialog.Title>
                         <Dialog.Content>
                             <Text>{dialogMessage}</Text>
                         </Dialog.Content>
