@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, ImageBackground} from 'react-native';
 import {useRouter} from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -58,44 +58,64 @@ const ProfileScreen = () => {
 
     return (
         <PaperProvider>
-            <ThemedView style={styles.container}>
-                {profile ? (
-                    <ThemedView>
-                        <ThemedText style={styles.title}>Profile</ThemedText>
-                        <ThemedText style={styles.label}>Username:</ThemedText>
-                        <ThemedText style={styles.value}>{profile.username}</ThemedText>
-                        <ThemedText style={styles.label}>Email:</ThemedText>
-                        <ThemedText style={styles.value}>{profile.email}</ThemedText>
-                        <Button mode="contained" onPress={handleLogout} style={styles.logoutButton}>
-                            Log Out
-                        </Button>
-                    </ThemedView>
-                ) : (
-                    <ThemedText>No profile data available</ThemedText>
-                )}
-                <Portal>
-                    <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)}>
-                        <Dialog.Title>Logout</Dialog.Title>
-                        <Dialog.Content>
-                            <Text>Are you sure you want to logout?</Text>
-                        </Dialog.Content>
-                        <Dialog.Actions>
-                            <Button onPress={() => setDialogVisible(false)}>Cancel</Button>
-                            <Button onPress={confirmLogout}>OK</Button>
-                        </Dialog.Actions>
-                    </Dialog>
-                </Portal>
-            </ThemedView>
+            <ImageBackground
+                source={require('@/assets/image.png')} // Path to your image in the assets folder
+                style={styles.backgroundImage}
+            >
+                <ThemedView style={styles.box}>
+                    {profile ? (
+                        <>
+                            <ThemedText style={styles.title}>Profile</ThemedText>
+                            <ThemedText style={styles.label}>Username:</ThemedText>
+                            <ThemedText style={styles.value}>{profile.username}</ThemedText>
+                            <ThemedText style={styles.label}>Email:</ThemedText>
+                            <ThemedText style={styles.value}>{profile.email}</ThemedText>
+                            <Button mode="contained" onPress={handleLogout} style={styles.logoutButton}>
+                                Log Out
+                            </Button>
+                        </>
+                    ) : (
+                        <ThemedText>No profile data available</ThemedText>
+                    )}
+                    <Portal>
+                        <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)}>
+                            <Dialog.Title>Logout</Dialog.Title>
+                            <Dialog.Content>
+                                <Text>Are you sure you want to logout?</Text>
+                            </Dialog.Content>
+                            <Dialog.Actions>
+                                <Button onPress={() => setDialogVisible(false)}>Cancel</Button>
+                                <Button onPress={confirmLogout}>OK</Button>
+                            </Dialog.Actions>
+                        </Dialog>
+                    </Portal>
+                </ThemedView>
+            </ImageBackground>
         </PaperProvider>
     );
 };
 
 const styles = StyleSheet.create({
+    backgroundImage: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        resizeMode: 'cover', // Ensures the image covers the entire background
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
+    },
+    box: {
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent background for the box to contrast with the image
+        padding: 20,
+        borderRadius: 8,
+        width: '100%',
+        maxWidth: 400,
+        alignItems: 'center',
+        boxShadow: '0px 2px 10px rgba(0,0,0,0.2)',
     },
     title: {
         fontSize: 24,
@@ -115,6 +135,8 @@ const styles = StyleSheet.create({
     },
     logoutButton: {
         marginTop: 24,
+        backgroundColor: 'black', // Set button color to black
+        color: 'white',
     },
 });
 

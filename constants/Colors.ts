@@ -1,26 +1,32 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Colors for the app with Yellow and Black/Blue theme.
  */
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+const yellowColor = '#FFCC00'; // Yellow color for primary accents
+const blackColor = '#000000'; // Black color for button and text
+const blueColor = '#0a7ea4'; // Blue accent for some UI elements
+const backgroundLight = '#FFF8E1'; // Light yellow background for light mode
+const backgroundDark = '#1E1B1D'; // Dark color with slight yellow tint for dark mode
+const textColorLight = '#333333'; // Dark text color for light mode
+const textColorDark = '#ECEDEE'; // Light text color for dark mode
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    text: textColorLight,
+    background: backgroundLight,
+    tint: yellowColor, // Yellow tint for highlights
+    icon: blueColor, // Blue for icon accents
+    button: blackColor, // Black button background
+    buttonText: '#FFF', // White text on buttons
+    contentBackground: '#FFEB3B', // Slightly muted yellow for content background
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    text: textColorDark,
+    background: backgroundDark,
+    tint: blueColor, // Blue tint for dark mode accents
+    icon: '#9BA1A6', // Lighter color for icons in dark mode
+    button: blackColor, // Black button background
+    buttonText: '#FFF', // White text on buttons
+    contentBackground: '#333333', // Dark background with slight yellow tint for dark mode
   },
 };

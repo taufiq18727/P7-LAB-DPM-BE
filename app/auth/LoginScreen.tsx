@@ -1,10 +1,10 @@
-import React, {useState} from "react";
-import {Image, StyleSheet, Text, TextInput, TouchableOpacity} from "react-native";
-import {useRouter} from "expo-router";
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {ThemedView} from "@/components/ThemedView";
-import {Button, Dialog, PaperProvider, Portal} from "react-native-paper";
+import { ThemedView } from "@/components/ThemedView";
+import { Button, Dialog, PaperProvider, Portal } from "react-native-paper";
 import API_URL from "../../config/config";
 
 export default function LoginScreen() {
@@ -41,7 +41,7 @@ export default function LoginScreen() {
     return (
         <PaperProvider>
             <ThemedView style={styles.container}>
-                <Image source={require("../../assets/images/icon.png")} style={styles.logo} />
+                <Image source={require("../../assets/images/image.png")} style={styles.logo} />
                 <Text style={styles.title}>Welcome Back!</Text>
                 <Text style={styles.subtitle}>Log in to continue</Text>
                 <TextInput
@@ -50,6 +50,7 @@ export default function LoginScreen() {
                     value={username}
                     onChangeText={setUsername}
                     autoCapitalize="none"
+                    placeholderTextColor="#A3A3A3"
                 />
                 <TextInput
                     style={styles.input}
@@ -57,6 +58,7 @@ export default function LoginScreen() {
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry
+                    placeholderTextColor="#A3A3A3"
                 />
                 <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
                     <Text style={styles.loginButtonText}>Login</Text>
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         padding: 16,
-        backgroundColor: "#f9f9f9",
+        backgroundColor: "yellow", // Keep the yellow background as requested
     },
     logo: {
         width: 150,
@@ -98,34 +100,34 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: "bold",
         marginBottom: 8,
-        color: "#333",
+        color: "#2D3A45", // Dark text for better contrast
     },
     subtitle: {
         fontSize: 16,
         marginBottom: 24,
-        color: "#666",
+        color: "#7A7A7A", // Light gray color for the subtitle
     },
     input: {
         width: "100%",
         height: 48,
-        borderColor: "#ccc",
+        borderColor: "#B8B8B8", // Soft gray border for inputs
         borderWidth: 1,
         borderRadius: 8,
         paddingHorizontal: 12,
         marginBottom: 16,
-        backgroundColor: "#fff",
+        backgroundColor: "#FFF", // White background for input fields
     },
     loginButton: {
         width: "100%",
         height: 48,
-        backgroundColor: "#007BFF",
+        backgroundColor: "#3A7FF6", // Bright blue button color
         borderRadius: 8,
         justifyContent: "center",
         alignItems: "center",
         marginBottom: 16,
     },
     loginButtonText: {
-        color: "#fff",
+        color: "white",
         fontSize: 16,
         fontWeight: "600",
     },
@@ -133,13 +135,13 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 48,
         borderWidth: 1,
-        borderColor: "#007BFF",
+        borderColor: "#3A7FF6", // Blue border for the register button
         borderRadius: 8,
         justifyContent: "center",
         alignItems: "center",
     },
     registerButtonText: {
-        color: "#007BFF",
+        color: "#3A7FF6", // Blue text color for register button
         fontSize: 16,
         fontWeight: "600",
     },
